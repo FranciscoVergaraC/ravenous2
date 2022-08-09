@@ -14,12 +14,32 @@ class SearchBar extends React.Component {
             'Highest Rated' : 'rating',
             'Most Reviewed' : 'review_count'
         }
+        this.handleTermChange = this.handleTermChange.bind(this);
+        this.handleLocationChange = this.handleLocationChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     handleSortByChange(sortByOption){
         this.setState({
             sortBy: sortByOption
         });
+    }
+
+    handleTermChange(e){
+        this.setState({
+            term: e.target.value
+        })
+    }
+    
+    handleLocationChange(e){
+        this.setState({
+            location: e.target.value
+        })
+    }
+
+    handleSearch(e){
+        this.props.searchYelp(this.state.term, this.state.location, this.state.sortBy);
+        e.preventDefault();
     }
 
     getSortByClass(sortByOption){
@@ -42,7 +62,7 @@ class SearchBar extends React.Component {
         });
     }
 
-    /*Double bind: This will allow us to both bind to the current value of 
+    /* bind: This will allow us to both bind to the current value of 
     this (as we usually do in the constructor()) but also bind 
     the current sortByOptionValue as the first argument to the method call, 
     ensuring the method is called with the appropriate value when clicked. */
@@ -56,11 +76,11 @@ class SearchBar extends React.Component {
                     </ul>
                 </div>
                 <div className="SearchBar-fields">
-                    <input placeholder="Search Businesses" />
-                    <input placeholder="Where?" />
+                    <input placeholder="Search Businesses" onChange={this.handleTermChange} />
+                    <input placeholder="Where?" onChange={this.handleLocationChange} />
                 </div>
                 <div className="SearchBar-submit">
-                    <a>Let's Go</a>
+                    <a onClick={this.handleSearch}>Let's Go</a>
                 </div>
             </div>
         );
